@@ -1,0 +1,66 @@
+{
+  "recordTypeMap": {},
+  "RecordSetBundles": [
+    {
+      "Records": [
+        {
+          "attributes": {
+            "type": "copado__JobTemplate__c",
+            "url": "/services/data/v59.0/sobjects/copado__JobTemplate__c/a0u8c00004p2VRBAA2"
+          },
+          "copado__ApiName__c": "Run_PMD_on_Specified_Branch_1",
+          "copado__Type__c": "Custom",
+          "copado__Version__c": 1,
+          "Id": "a0u8c00004p2VRBAA2",
+          "LastReferencedDate": "2024-01-30T20:45:49.000+0000",
+          "LastViewedDate": "2024-01-30T20:45:49.000+0000",
+          "Name": "Run PMD on Specified Branch"
+        }
+      ],
+      "ObjectType": "copado__JobTemplate__c"
+    },
+    {
+      "Records": [
+        {
+          "attributes": {
+            "type": "copado__JobStep__c",
+            "url": "/services/data/v59.0/sobjects/copado__JobStep__c/a0t8c00000KgfRbAAJ"
+          },
+          "copado__ApiName__c": "Run_PMD_on_Specified_Branch_1_Run_PMD_on_Specified_Branch_1",
+          "copado__ConfigJson__c": "{\"functionName\":\"branch_pmd\",\"parameters\":[{\"name\":\"git_json\",\"value\":\"{$Context.Repository.Credential}\"},{\"name\":\"environmentBranch\",\"value\":\"main\"},{\"name\":\"ruleset\",\"value\":\"rulesets/apex/quickstart.xml\"},{\"name\":\"path\",\"value\":\"/app/force-app/main/default\"}]}",
+          "copado__CustomType__c": "Function",
+          "copado__IsSkipped__c": false,
+          "copado__JobTemplate__c": "a0u8c00004p2VRBAA2",
+          "copado__Order__c": 1,
+          "copado__Type__c": "Function",
+          "Id": "a0t8c00000KgfRbAAJ",
+          "Name": "Run PMD on Specified Branch"
+        }
+      ],
+      "ObjectType": "copado__JobStep__c"
+    },
+    {
+      "Records": [
+        {
+          "attributes": {
+            "type": "copado__Function__c",
+            "url": "/services/data/v59.0/sobjects/copado__Function__c/a0l8c000009sLmLAAU"
+          },
+          "copado__API_Name__c": "branch_pmd",
+          "copado__Image_Name__c": "copado-multicloud-mulesoft:v1",
+          "copado__Options__c": "[ ]",
+          "copado__Parameters__c": "[ {\n  \"name\" : \"git_json\",\n  \"defaultValue\" : \"{$Context.Repository.Credential}\"\n}, {\n  \"name\" : \"environmentBranch\",\n  \"defaultValue\" : \"main\"\n}, {\n  \"name\" : \"ruleset\",\n  \"defaultValue\" : \"rulesets/apex/quickstart.xml\"\n}, {\n  \"name\" : \"path\",\n  \"defaultValue\" : \"/app/force-app/main/default\"\n} ]",
+          "copado__Script__c": "echo \"*****DOWNLOAD PMD*****\"\n$(wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F7.0.0-rc4/pmd-dist-7.0.0-rc4-bin.zip -O pmddownload)\n\necho \"*****EXTRACTING ZIP*****\"\nunzip pmddownload\n\necho \"*****Clone Repo Branch*****\"\ncopado-git-get -c \"$environmentBranch\"\n\necho \"*****RUN PMD*****\"\npmd-bin-7.0.0-rc4/bin/pmd check -d $path -R $ruleset --no-fail-on-violation -f csv -r pmdresults.csv\n\ncopado -u pmdresults.csv",
+          "copado__Type__c": "Custom",
+          "copado__Worker_Size__c": "S",
+          "Id": "a0l8c000009sLmLAAU",
+          "LastReferencedDate": "2024-01-30T03:35:37.000+0000",
+          "LastViewedDate": "2024-01-30T03:35:37.000+0000",
+          "Name": "Branch PMD"
+        }
+      ],
+      "ObjectType": "copado__Function__c"
+    }
+  ],
+  "blobsByUID": {}
+}
